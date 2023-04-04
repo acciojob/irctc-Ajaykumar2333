@@ -21,26 +21,24 @@ public class TrainService {
     TrainRepository trainRepository;
 
     public Integer addTrain(AddTrainEntryDto trainEntryDto){
-
-        //Add the train to the trainRepository
-        //and route String logic to be taken from the Problem statement.
-        //Save the train and return 0 since that is what the test is expecting.
-        //Avoid using the lombok library
-
         Train train = new Train();
         train.setDepartureTime(trainEntryDto.getDepartureTime());
         train.setNoOfSeats(trainEntryDto.getNoOfSeats());
 
-        List<Station>stationList = trainEntryDto.getStationRoute();
+        List<Station> stationList = trainEntryDto.getStationRoute();
         String route = "";
-        for(Station station : stationList){
-            route += station + ",";
+        for (int i = 0; i < stationList.size(); i++) {
+            route += stationList.get(i);
+            if (i < stationList.size() - 1) {
+                route += ",";
+            }
         }
-        route = route.substring(0,route.length()-1);
         train.setRoute(route);
+
         trainRepository.save(train);
-        return 0;
+        return train.getTrainId();
     }
+
     public Integer calculateAvailableSeats(SeatAvailabilityEntryDto seatAvailabilityEntryDto){
 
         //Calculate the total seats available
