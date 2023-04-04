@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TrainService {
@@ -20,23 +21,20 @@ public class TrainService {
     @Autowired
     TrainRepository trainRepository;
 
-    public Integer addTrain(AddTrainEntryDto trainEntryDto){
+    public Integer addTrain(AddTrainEntryDto trainEntryDto) {
         Train train = new Train();
         train.setDepartureTime(trainEntryDto.getDepartureTime());
         train.setNoOfSeats(trainEntryDto.getNoOfSeats());
 
         List<Station> stationList = trainEntryDto.getStationRoute();
-        String route = "";
-        for (int i = 0; i < stationList.size(); i++) {
-            route += stationList.get(i);
-            if (i < stationList.size() - 1) {
-                route += ",";
-            }
-        }
+        String route = stationList.stream()
+                .map(Station::toString)
+                .collect(Collectors.joining(","));
         train.setRoute(route);
+i
+        Train savedTrain = trainRepository.save(train);
 
-        trainRepository.save(train);
-        return train.getTrainId();
+        return savedTrain.getTrainId();
     }
 
     public Integer calculateAvailableSeats(SeatAvailabilityEntryDto seatAvailabilityEntryDto){
