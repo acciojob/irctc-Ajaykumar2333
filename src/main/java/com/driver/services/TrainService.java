@@ -86,6 +86,11 @@ public class TrainService {
         //throw new Exception("Train is not passing from this station");
         //  in a happy case we need to find out the number of such people.
         Train train;
+        try {
+            train = trainRepository.findById(trainId).orElseThrow(() -> new Exception("Train not found"));
+        } catch (Exception e) {
+            throw new Exception("Error fetching train details");
+        }
         try{
             train = trainRepository.findById(trainId).get();
         }
