@@ -31,7 +31,6 @@ public class TrainService {
                 .map(Station::toString)
                 .collect(Collectors.joining(","));
         train.setRoute(route);
-i
         Train savedTrain = trainRepository.save(train);
 
         return savedTrain.getTrainId();
