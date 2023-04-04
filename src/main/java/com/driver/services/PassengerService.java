@@ -1,6 +1,5 @@
 package com.driver.services;
 
-
 import com.driver.model.Passenger;
 import com.driver.repository.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,8 @@ public class PassengerService {
     PassengerRepository passengerRepository;
 
     public Integer addPassenger(Passenger passenger){
-        //Add the passenger Object in the passengerDb and return the passegnerId that has been returned
-        return null;
+        //Add the passenger Object in the passengerDb and return the passengerId that has been returned
+        Passenger savedPassenger = passengerRepository.save(passenger);
+        return savedPassenger.getPassengerId();
     }
-
 }
