@@ -80,17 +80,11 @@ public class TrainService {
     }
 
     public Integer calculatePeopleBoardingAtAStation(Integer trainId, Station station) throws Exception {
-
-        //We need to find out the number of people who will be boarding a train from a particular station
-        //if the trainId is not passing through that station
-        //throw new Exception("Train is not passing from this station");
-        //  in a happy case we need to find out the number of such people.
-        Train train;
-        try {
-            train = trainRepository.findById(trainId).get();
-        } catch (Exception e) {
+        Train train = trainRepository.findById(trainId).orElse(null);
+        if (train == null || !train.getRoute().contains(station.toString())) {
             throw new Exception("Train is not passing from this station");
         }
+
         Integer count = 0;
 
         List<Ticket> bookedTickets = train.getBookedTickets();
@@ -105,7 +99,6 @@ public class TrainService {
         }
         return count;
     }
-
     public Integer calculateOldestPersonTravelling(Integer trainId) {
 
         //Throughout the journey of the train between any 2 stations
